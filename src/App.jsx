@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 function App() {
   const [time, setTime] = useState(0); // time in seconds
@@ -23,6 +23,11 @@ function App() {
     setTime(0);
   };
 
+  // Cleanup interval when component unmounts
+  useEffect(() => {
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
   const formatTime = (totalSeconds) => {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
@@ -32,7 +37,7 @@ function App() {
   return (
     <div>
       <h1>Stopwatch</h1>
-      <p>Time : {formatTime(time)}</p>
+      <p>Time: {formatTime(time)}</p>
       <button onClick={handleStartStop}>{isRunning ? "Stop" : "Start"}</button>
       <button onClick={handleReset}>Reset</button>
     </div>
